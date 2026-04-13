@@ -6,7 +6,16 @@
 - **纯 Python 实现**: 不依赖 LaTeX 环境 (如 TeX Live, MiKTeX)，完全使用 Python 渲染。
 - **支持 LaTeX & MathML**: 使用 LaTeX 语法 (例如 `\frac{1}{2}`) 或标准的 MathML。
 - **SVG 矢量输出**: 公式渲染为 SVG 路径，保持高清晰度且可缩放。
-- **样式自定义**: 支持设置字号、颜色和字体 (内置 STIX Two Math)。
+- **样式自定义**: 支持设置字号、颜色和字体 (内置 STIX Two Math，支持其他数学字体)。
+
+## 字体选择说明
+由于 `ziamath` 库的特性，它要求使用的字体必须包含特殊的 **OpenType MATH 表** 才能正确排版数学公式。大多数普通系统字体不具备此特性。
+
+插件的字体选择列表仅包含已知支持 MATH 表的字体：
+- **STIX Two Math**: `ziamath` 内置，无需额外安装，推荐使用。
+- **Cambria Math, Latin Modern Math, DejaVu Math TeX Gyre**: 这些是常见的数学字体，如果你的系统已安装它们，也可以选择使用。
+
+**重要提示**: Inkscape 扩展的 UI (INX 文件) 无法动态获取系统字体列表。因此，我们无法提供一个像 Inkscape 自身那样的完整系统字体下拉菜单。请根据上述说明选择合适的字体。
 
 ## 环境要求
 - Inkscape 1.0+ (自带 inkex 库，无需额外安装)

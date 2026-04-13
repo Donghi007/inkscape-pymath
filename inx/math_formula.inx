@@ -13,8 +13,9 @@
                 <option value="STIXTwoMath-Regular">STIX Two Math (ziamath 内置 - 推荐)</option>
                 <option value="Cambria Math">Cambria Math (系统安装后可用)</option>
                 <option value="Latin Modern Math">Latin Modern Math (系统安装后可用)</option>
+                <option value="DejaVu Math TeX Gyre">DejaVu Math TeX Gyre (系统安装后可用)</option>
             </param>
-            <label>提示: 只有包含 OpenType MATH 表的字体才能正常渲染公式。</label>
+            <label>提示: 只有包含 OpenType MATH 表的字体才能正常渲染公式。此列表为已知数学字体，无法动态获取所有系统字体。</label>
             <param name="size" type="float" min="8" max="72" precision="1" gui-text="字号 (pt):">12.0</param>
             <param name="color" type="color" gui-text="公式颜色:">#000000</param>
             <param name="pos_type" type="optiongroup" appearance="combo" gui-text="插入位置:">
@@ -23,6 +24,7 @@
                 <option value="center">文档页面的几何中心</option>
                 <option value="origin">坐标原点 (0,0)</option>
             </param>
+            <param name="ungroup" type="bool" gui-text="插入后自动取消组合 (Ungroup)">false</param>
         </page>
         <page name="help" gui-text="帮助说明">
             <label>使用说明:</label>
