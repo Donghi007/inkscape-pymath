@@ -1,5 +1,5 @@
 import pytest
-from math_formula.renderer import render_latex, render_mathml
+from math_formula_core.renderer import render_latex, render_mathml
 
 def test_render_latex_basic():
     # 测试基础 LaTeX 渲染

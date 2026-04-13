@@ -10,10 +10,10 @@
                 <option value="mathml">MathML 语法</option>
             </param>
             <param name="font" type="optiongroup" appearance="combo" gui-text="渲染字体:">
-                <option value="STIXTwoMath-Regular">STIX Two Math (内置)</option>
-                <option value="Times New Roman">Times New Roman (系统)</option>
-                <option value="Arial">Arial (系统)</option>
-                <option value="Cambria Math">Cambria Math (系统)</option>
+                <option value="STIXTwoMath-Regular">STIX Two Math (内置 - 推荐)</option>
+                <option value="Cambria Math">Cambria Math (需系统已安装)</option>
+                <option value="Latin Modern Math">Latin Modern Math (需系统已安装)</option>
+                <option value="DejaVu Math TeX Gyre">DejaVu Math TeX Gyre (需系统已安装)</option>
             </param>
             <param name="size" type="float" min="8" max="72" precision="1" gui-text="字号 (pt):">12.0</param>
             <param name="color" type="color" gui-text="公式颜色:">#000000</param>
@@ -32,6 +32,6 @@
         </effects-menu>
     </effect>
     <script>
-        <command location="inx" interpreter="python">math_formula/math_formula.py</command>
+        <command location="inx" interpreter="python">math_formula_core/math_formula.py</command>
     </script>
 </inkscape-extension>

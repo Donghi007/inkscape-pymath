@@ -1,7 +1,12 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import inkex
 from inkex import Group, Layer, TextElement
-from math_formula.renderer import render_latex, render_mathml
-from math_formula.utils import color_to_hex
+from lxml import etree
+from math_formula_core.renderer import render_latex, render_mathml
+from math_formula_core.utils import color_to_hex
 
 class MathFormulaExtension(inkex.EffectExtension):
     """
@@ -37,7 +42,7 @@ class MathFormulaExtension(inkex.EffectExtension):
 
             # 将 SVG 字符串解析为 lxml 元素
             # ziamath 返回的是完整的 <svg>，我们需要将其转换为 Inkscape 可识别的组或路径
-            svg_element = inkex.utils.etree.fromstring(svg_xml.encode('utf-8'))
+            svg_element = etree.fromstring(svg_xml.encode('utf-8'))
             
             # 创建一个组，并将渲染结果放入
             # 我们只需要 svg 内部的内容
@@ -47,20 +52,40 @@ class MathFormulaExtension(inkex.EffectExtension):
             for child in svg_element:
                 new_group.append(child)
 
-            # 确定插入位置: 如果有选中，放在选中位置；否则放在画布中心
-            if self.svg.get_selection():
-                # 插入到选中的第一个对象上方
-                target = self.svg.get_selection()[0]
-                target.getparent().append(new_group)
-                # 简单居中对齐到目标
-                bbox = target.bounding_box()
-                if bbox:
-                    new_group.transform.add_translation(bbox.center.x, bbox.center.y)
-            else:
-                # 插入到当前层，位置设为 (0,0) 或视图中心
-                view_center = self.svg.get_center_position()
-                new_group.transform.add_translation(view_center[0], view_center[1])
-                self.svg.get_current_layer().append(new_group)
+            # 确定插入位置
+            center_x, center_y = 0, 0
+            
+            try:
+                if self.svg.selection:
+                    # 如果有选中，使用选中物体的中心
+                    bbox = self.svg.selection.bounding_box()
+                    if bbox:
+                        center_x, center_y = bbox.center
+                else:
+                    # 尝试多种方法获取画布中心
+                    if hasattr(self.svg, "get_viewport"):
+                        center_x, center_y = self.svg.get_viewport().center
+                    elif hasattr(self.svg, "get_center_position"):
+                        center_x, center_y = self.svg.get_center_position()
+                    elif hasattr(self.svg, "namedview") and self.svg.namedview is not None:
+                        # 尝试从 namedview 获取
+                        nv = self.svg.namedview
+                        center_x = float(nv.get('inkscape:cx', 0))
+                        center_y = float(nv.get('inkscape:cy', 0))
+                    else:
+                        # 最后的保底方案: 使用视图框 (viewBox) 的中心
+                        vbox = self.svg.get_viewbox()
+                        if vbox:
+                            center_x = vbox[0] + vbox[2] / 2
+                            center_y = vbox[1] + vbox[3] / 2
+            except:
+                # 即使出错也保持 (0,0)
+                pass
+
+            # 应用位移
+            # 使用更兼容的 Transform 语法
+            new_group.transform @= inkex.Transform(translate=(center_x, center_y))
+            self.svg.get_current_layer().append(new_group)
 
         except Exception as e:
             inkex.errormsg(f"渲染公式时出错: {str(e)}")

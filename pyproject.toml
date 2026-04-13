@@ -3,7 +3,7 @@ name = "inkscape-math-formula"
 version = "0.1.0"
 description = "Inkscape extension for inserting mathematical formulas using pure Python (ziamath)."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "lxml>=5.0.0",
     "ziamath>=0.13.0",

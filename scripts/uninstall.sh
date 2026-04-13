@@ -78,7 +78,7 @@ remove_file() {
 echo "正在卸载扩展文件..."
 
 remove_file "$EXT_DIR/${EXTENSION_NAME}.inx"
-remove_file "$EXT_DIR/${EXTENSION_NAME}"
+remove_file "$EXT_DIR/${EXTENSION_NAME}_core"
 
 echo ""
 echo "卸载完成！"

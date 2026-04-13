@@ -68,7 +68,7 @@ if [[ "$INSTALL_MODE" == "Flatpak" ]]; then
         echo "方法 2: 将扩展复制到用户配置目录（推荐）"
         echo "  mkdir -p ~/.config/inkscape/extensions"
         echo "  cp inx/math_formula.inx ~/.config/inkscape/extensions/"
-        echo "  cp -r src/math_formula ~/.config/inkscape/extensions/"
+        echo "  cp -r src/math_formula_core ~/.config/inkscape/extensions/"
         echo ""
         echo "方法 3: 重新安装 Inkscape 为非 Flatpak 版本"
         exit 1
@@ -81,10 +81,10 @@ echo ""
 echo "正在安装扩展文件..."
 
 ln -sf "$PROJECT_ROOT/inx/${EXTENSION_NAME}.inx" "$EXT_DIR/${EXTENSION_NAME}.inx"
-ln -sf "$PROJECT_ROOT/src/${EXTENSION_NAME}" "$EXT_DIR/${EXTENSION_NAME}"
+ln -sf "$PROJECT_ROOT/src/${EXTENSION_NAME}_core" "$EXT_DIR/${EXTENSION_NAME}_core"
 
 echo "  ✓ ${EXTENSION_NAME}.inx"
-echo "  ✓ ${EXTENSION_NAME}/"
+echo "  ✓ ${EXTENSION_NAME}_core/"
 
 echo ""
 echo "安装完成！"
