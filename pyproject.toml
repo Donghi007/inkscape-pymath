@@ -1,0 +1,26 @@
+[project]
+name = "inkscape-math-formula"
+version = "0.1.0"
+description = "Inkscape extension for inserting mathematical formulas using pure Python (ziamath)."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "lxml>=5.0.0",
+    "ziamath>=0.13.0",
+    "latex2mathml>=3.0.0",
+    "matplotlib>=3.8.0",
+]
+
+[project.optional-dependencies]
+inkscape = [
+    "inkex>=1.3.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
