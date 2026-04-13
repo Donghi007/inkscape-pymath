@@ -19,6 +19,7 @@ class MathFormulaExtension(inkex.EffectExtension):
         pars.add_argument("--font", type=str, default="STIXTwoMath-Regular", help="渲染字体")
         pars.add_argument("--size", type=float, default=12.0, help="字号 (pt)")
         pars.add_argument("--color", type=str, default="#000000", help="颜色 (HEX)")
+        pars.add_argument("--pos_type", type=str, default="viewport", help="插入位置类型")
         # 实时预览
         pars.add_argument("--tab", type=str, help="当前激活的标签页")
 
@@ -29,6 +30,7 @@ class MathFormulaExtension(inkex.EffectExtension):
         font = self.options.font
         size = self.options.size
         color = color_to_hex(self.options.color)
+        pos_type = self.options.pos_type
 
         if not formula_str:
             return
@@ -41,11 +43,9 @@ class MathFormulaExtension(inkex.EffectExtension):
                 svg_xml = render_mathml(formula_str, font=font, size=size, color=color)
 
             # 将 SVG 字符串解析为 lxml 元素
-            # ziamath 返回的是完整的 <svg>，我们需要将其转换为 Inkscape 可识别的组或路径
             svg_element = etree.fromstring(svg_xml.encode('utf-8'))
             
             # 创建一个组，并将渲染结果放入
-            # 我们只需要 svg 内部的内容
             new_group = Group()
             new_group.label = f"Math Formula: {formula_str[:20]}"
             
@@ -56,30 +56,29 @@ class MathFormulaExtension(inkex.EffectExtension):
             center_x, center_y = 0, 0
             
             try:
-                if self.svg.selection:
-                    # 如果有选中，使用选中物体的中心
+                if pos_type == "selection" and self.svg.selection:
                     bbox = self.svg.selection.bounding_box()
                     if bbox:
                         center_x, center_y = bbox.center
-                else:
-                    # 尝试多种方法获取画布中心
+                elif pos_type == "viewport":
                     if hasattr(self.svg, "get_viewport"):
                         center_x, center_y = self.svg.get_viewport().center
                     elif hasattr(self.svg, "get_center_position"):
                         center_x, center_y = self.svg.get_center_position()
-                    elif hasattr(self.svg, "namedview") and self.svg.namedview is not None:
-                        # 尝试从 namedview 获取
-                        nv = self.svg.namedview
-                        center_x = float(nv.get('inkscape:cx', 0))
-                        center_y = float(nv.get('inkscape:cy', 0))
-                    else:
-                        # 最后的保底方案: 使用视图框 (viewBox) 的中心
-                        vbox = self.svg.get_viewbox()
-                        if vbox:
-                            center_x = vbox[0] + vbox[2] / 2
-                            center_y = vbox[1] + vbox[3] / 2
+                elif pos_type == "center":
+                    # 获取页面尺寸并计算中心
+                    width = self.svg.viewbox_width
+                    height = self.svg.viewbox_height
+                    center_x, center_y = width / 2, height / 2
+                elif pos_type == "origin":
+                    center_x, center_y = 0, 0
+                else:
+                    # 保底方案
+                    vbox = self.svg.get_viewbox()
+                    if vbox:
+                        center_x = vbox[0] + vbox[2] / 2
+                        center_y = vbox[1] + vbox[3] / 2
             except:
-                # 即使出错也保持 (0,0)
                 pass
 
             # 应用位移
