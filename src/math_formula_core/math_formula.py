@@ -27,6 +27,11 @@ class MathFormulaExtension(inkex.EffectExtension):
     def effect(self):
         # 获取用户参数
         formula_str = self.options.formula
+        if formula_str:
+            # 预处理：将可能存在的字面量 \n 替换为真实换行符，
+            # 然后在 renderer 中会统一处理成空格。这能解决一些奇怪的转义问题。
+            formula_str = formula_str.replace('\\n', '\n')
+            
         input_type = self.options.input_type
         font = self.options.font
         size = self.options.size
