@@ -9,6 +9,8 @@ dependencies = [
     "ziamath>=0.13.0",
     "latex2mathml>=3.0.0",
     "matplotlib>=3.8.0",
+    "tinycss2>=1.5.1",
+    "cssselect>=1.4.0",
 ]
 
 [project.optional-dependencies]
