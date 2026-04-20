@@ -1,3 +1,5 @@
+![example](./image-1.png)
+
 # Inkscape 数学公式扩展 (Math Formula Extension)
 
 > **[English Version](#english-version)** | **[英文版本](#english-version)**
@@ -31,7 +33,6 @@
 - Inkscape 1.0+ (自带 inkex 库，无需额外安装)
 - Python 3.13+ (uv 虚拟环境会自动配置)
 - `uv` 包管理工具
-
 
 ### 1. 安装
 
