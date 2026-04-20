@@ -32,18 +32,26 @@
 
 - Inkscape 1.0+ (自带 inkex 库，无需额外安装)
 - Python 3.13+ (uv 虚拟环境会自动配置)
-- `uv` 包管理工具
+- `uv` 包管理工具 (推荐) or `conda` (可选)
 
 ### 1. 安装
 
 ```bash
 # 克隆项目
-git clone <repository-url>
-cd inkscape-pymath
+git clone https://github.com/Donghi007/inkscape-pymath.git
+cd inkscape-pymath # 进入项目目录
 
 # 安装 Python 依赖
 uv sync
 ```
+如果使用conda, 则先创建一个虚拟环境，然后再在这个环境中安装依赖。
+```bash
+conda create -n inkscape-pymath python=3.13
+conda activate inkscape-pymath
+cd inkscape-pymath # 进入项目目录
+pip install -e . # 安装依赖
+```
+不使用git clone也可以直接下载文件压缩包到本地，然后解压到项目目录即可。
 
 手动将以下两个文件或文件夹复制到inkscape的extension文件夹中即可完成安装。
 
@@ -206,7 +214,7 @@ The font selection list only includes fonts known to support the MATH table:
 
 - Inkscape 1.0+ (includes inkex library, no additional installation needed)
 - Python 3.13+ (uv virtual environment will be configured automatically)
-- `uv` package manager
+- `uv` package manager (recommended) or `conda` (optional)
 
 ## Quick Start
 
@@ -214,12 +222,21 @@ The font selection list only includes fonts known to support the MATH table:
 
 ```bash
 # Clone the project
-git clone <repository-url>
+git clone https://github.com/Donghi007/inkscape-pymath.git
 cd extension-inkscape
 
 # Install Python dependencies
 uv sync
 ```
+
+If using conda, create a virtual environment first, and then install the dependencies in that environment.
+```bash
+conda create -n inkscape-pymath python=3.13
+conda activate inkscape-pymath
+cd extension-inkscape # enter the project directory
+pip install -e . # install dependencies
+```
+If you prefer not to use git clone, you can download the project files as a zip archive and extract them to the project directory.
 
 Manually copy the following two files or folders to the Inkscape extension folder to complete installation.
 
