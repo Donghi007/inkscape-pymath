@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-    <name>数学公式 (Math Formula)</name>
+    <name>数学公式(Math Formula)</name>
     <id>org.inkscape.math_formula</id>
     <param name="tab" type="notebook">
         <page name="main" gui-text="Main Settings">
@@ -10,7 +10,7 @@
                 <option value="mathml">MathML syntax</option>
             </param>
             <param name="font" type="optiongroup" appearance="combo" gui-text="Font:">
-                <option value="STIXTwoMath-Regular">STIX Two Math (ziamath 内置 - 推荐)</option>
+                <option value="STIXTwoMath-Regular">STIX Two Math (ziamath builtin - recommended)</option>
                 <option value="Cambria Math">Cambria Math (If system has)</option>
                 <option value="Latin Modern Math">Latin Modern Math (If system has)</option>
                 <option value="DejaVu Math TeX Gyre">DejaVu Math TeX Gyre (If system has)</option>
