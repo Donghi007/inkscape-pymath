@@ -24,10 +24,10 @@
       <separator/>
       <label appearance="header">Choose a Math Font</label>
       <param name="font_preset" type="enum" gui-text="Font:">
+        <item value="stix-two">STIX Two Math (default)</item>
         <item value="latin-modern">Latin Modern (Computer Modern)</item>
         <item value="xits">XITS Math (Times New Roman style)</item>
         <item value="libertinus">Libertinus Math (Elegant serif)</item>
-        <item value="stix-two">STIX Two Math (Built-in)</item>
         <item value="custom">Custom (choose file below)</item>
       </param>
       <param name="font_file" type="path" gui-text="Custom Font File:" mode="file" filetypes="ttf,otf">
