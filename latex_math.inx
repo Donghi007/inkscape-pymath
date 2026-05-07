@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+  <name>Latex Math (数学公式)</name>
+  <id>org.inkscape.effect.latex_math</id>
+  <param name="tab" type="notebook">
+    <page name="formula" gui-text="Formula">
+      <param name="latex_string" type="string" gui-text="Input LaTeX Formula:" appearance="multiline">
+      </param>
+      <param name="font_size" type="float" min="4" max="200" gui-text="Font Size (pt):">24</param>
+      <param name="inline" type="bool" gui-text="Inline Math Mode">false</param>
+    </page>
+    <page name="help" gui-text="Font Help">
+      <label appearance="header">Why Regular Fonts Can't Be Used</label>
+      <param name="font_info_why" type="description">
+        Fonts like Times New Roman and Arial cannot render
+        math because they lack a MATH table. This table
+        defines how to draw superscripts, fractions,
+        integrals, and stretchy symbols.
+
+        Use only math-enabled fonts (e.g. the pre-installed
+        ones). XITS Math resembles Times, Latin Modern Math
+        looks like LaTeX's Computer Modern.
+      </param>
+      <separator/>
+      <label appearance="header">Choose a Math Font</label>
+      <param name="font_preset" type="enum" gui-text="Font:">
+        <item value="latin-modern">Latin Modern (Computer Modern)</item>
+        <item value="xits">XITS Math (Times New Roman style)</item>
+        <item value="libertinus">Libertinus Math (Elegant serif)</item>
+        <item value="stix-two">STIX Two Math (Built-in)</item>
+        <item value="custom">Custom (choose file below)</item>
+      </param>
+      <param name="font_file" type="path" gui-text="Custom Font File:" mode="file" filetypes="ttf,otf">
+      </param>
+      <separator/>
+      <label appearance="header">Add Your Own Font</label>
+      <param name="font_add_info" type="description">
+        Drop .ttf / .otf math font files into the
+        math_fonts/ folder. Must contain a MATH table.
+        Select "Custom" above and browse to the file.
+        Other free fonts: Asana Math, Fira Math,
+        TeX Gyre Termes/Pagella/Schola Math, etc.
+      </param>
+      <separator/>
+      <label appearance="header">Changing Color and Style</label>
+      <param name="font_color_info" type="description">
+        Select the formula on canvas, then open
+        Fill and Stroke (Ctrl+Shift+F) to change
+        fill color, stroke, opacity, gradients,
+        blur, or any other Inkscape effect.
+      </param>
+      <separator/>
+      <param name="author_info" type="description" gui-text="">
+        Author: @Donghai  ·  Power by ziamath / ziafont / latex2mathml
+      </param>
+    </page>
+  </param>
+  <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+      <submenu name="Text"/>
+    </effects-menu>
+  </effect>
+  <script>
+    <command location="inx" interpreter="python">inkscape_math_core/latex_math.py</command>
+  </script>
+</inkscape-extension>

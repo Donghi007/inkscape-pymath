@@ -1,0 +1,60 @@
+\begin{aligned}
+ & 
+\begin{bmatrix}
+a_{11} & a_{12} & \ldots & a_{1n} \\
+a_{21} & a_{22} & \ldots & a_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+a_{m1} & a_{m2} & \ldots & a_{mn}
+\end{bmatrix}-
+\begin{bmatrix}
+b_{11} & b_{12} & \ldots & b_{1n} \\
+b_{21} & b_{22} & \ldots & b_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+b_{m1} & b_{m2} & \ldots & b_{mn}
+\end{bmatrix} \\
+ & =
+\begin{bmatrix}
+a_{11}-b_{11} & a_{12}-b_{12} & \ldots & a_{1n}-b_{1n} \\
+a_{21}-b_{21} & a_{22}-b_{22} & \ldots & a_{2n}-b_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+a_{m1}-b_{m1} & a_{m2}-b_{m2} & \ldots & a_{mn}-b_{mn}
+\end{bmatrix} \\
+ & 
+\begin{bmatrix}
+1 & 3 & 5 & 7 \\
+2 & 4 & 6 & 8
+\end{bmatrix}-
+\begin{bmatrix}
+4 & 3 & 1 & 4 \\
+5 & 3 & 1 & 6
+\end{bmatrix}=
+\begin{bmatrix}
+-3 & 0 & 4 & 3 \\
+-3 & 1 & 5 & 2
+\end{bmatrix}
+\end{aligned}
+
+\begin{align}
+(a+b)^2 &= (a+b)(a+b) \\
+&= a^2 + ab + ba + b^2 \\
+&= a^2 + 2ab + b^2
+\end{align}
+
+
+\alpha, \beta, \gamma, \delta, \epsilon, \theta, \lambda, \mu, \pi, \sigma, \phi, \omega
+
+
+\frac{d\vec{M}}{dt}=-|\gamma|\vec{M}\times\vec{H}_{eff}+\frac{\alpha}{M_s}(\vec{M}\times\frac{d\vec{M}}{dt})
+
+\begin{aligned}
+\mathcal{E} & =\int_{V_\mathrm{m}}\mathrm{d}\mathbf{r}\quad\mathcal{A}\sum_{i=x,y,z}\left|\nabla m_i\right|^2+\mathcal{D}\mathbf{m}\cdot(\nabla\times\mathbf{m})-M_\mathrm{s}\mathbf{m}\cdot\mathbf{B}+ \\
+ & +\frac{1}{2\mu_0}\int_{\mathbb{R}^3}\mathrm{d}\mathbf{r}\sum_{i=x,y,z}\left|\nabla A_{\mathrm{d},i}\right|^2,
+\end{aligned}
+
+\begin{pmatrix} x' \\ y' \end{pmatrix} = \frac{1}{l} \begin{pmatrix} \cos \phi_{\mathrm{A}} & \sin \phi_{\mathrm{A}} \\ -\sin \phi_{\mathrm{A}} & \cos \phi_{\mathrm{A}} \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}
+
+|x| = \begin{cases} x & \text{if } x \ge 0 \\ -x & \text{if } x < 0 \end{cases}
+
+\ce{K4[Fe(CN)6] + 6H2O -> 4K+ + [Fe(CN)6]^4-}
+\ce{2H2(g) + O2(g) -> 2H2O(l)}
+\ce{H2O <=> H+ + OH-}

@@ -1,364 +1,393 @@
-![example](./image-1.png)
+# Inkscape Pymath
 
-# Inkscape 数学公式扩展 (Math Formula Extension)
+[English Version](#inkscape-pymath-1)
+![Introduction](image-1.png)
 
-> **[English Version](#english-version)** | **[英文版本](#english-version)**
+## 简介
 
-***
+Inkscape-pymath 是一个纯 Python 实现的 Inkscape 数学公式插件，无需额外依赖，直接在 Inkscape 中渲染 LaTeX 数学公式和化学方程式。
 
-## 中文版本
+## 功能特点
 
-这是一个为矢量图形软件 Inkscape 开发的扩展插件，允许用户在画布中插入由 **ziamath** 渲染的数学公式。
+- 纯 Python 实现，无需安装额外的 LaTeX 引擎
+- 支持数学公式和化学方程式（`\ce{}` 命令
+- 内置多种数学字体
+- 支持自定义字体（需包含 MATH table）
+- 支持更改公式颜色
+- 支持行内和显示模式
 
-## 核心特性
+## 安装
 
-- **纯 Python 实现**: 不依赖 LaTeX 环境 (如 TeX Live, MiKTeX)，完全使用 Python 渲染。
-- **支持 LaTeX & MathML**: 使用 LaTeX 语法 (例如 `\frac{1}{2}`) 或标准的 MathML。
-- **SVG 矢量输出**: 公式渲染为 SVG 路径，保持高清晰度且可缩放。
-- **样式自定义**: 支持设置字号、颜色和字体 (内置 STIX Two Math，支持其他数学字体)。
+### 1. 复制文件
 
-## 字体选择说明
+将项目中的以下文件以及文件夹复制到 Inkscape 的extensions文件夹里面：
 
-由于 `ziamath` 库的特性，它要求使用的字体必须包含特殊的 **OpenType MATH 表** 才能正确排版数学公式。大多数普通系统字体不具备此特性。
+- `inkscape_math_core/` 文件夹
+- `latex_math.inx` 文件
 
-插件的字体选择列表仅包含已知支持 MATH 表的字体：
+例如：
+![Flatpak 版本的extensions文件夹](image.png)
 
-- **STIX Two Math**: `ziamath` 内置，无需额外安装，推荐使用。
-- **Cambria Math, Latin Modern Math, DejaVu Math TeX Gyre**: 这些是常见的数学字体，如果你的系统已安装它们，也可以选择使用。
-
-**重要提示**: Inkscape 扩展的 UI (INX 文件) 无法动态获取系统字体列表。因此，我们无法提供一个像 Inkscape 自身那样的完整系统字体下拉菜单。请根据上述说明选择合适的字体。
-
-## 环境要求
-
-- Inkscape 1.0+ (自带 inkex 库，无需额外安装)
-- Python 3.13+ (uv 虚拟环境会自动配置)
-- `uv` 包管理工具 (推荐) or `conda` (可选)
-
-### 1. 安装
-
-```bash
-# 克隆项目
-git clone https://github.com/Donghi007/inkscape-pymath.git
-cd inkscape-pymath # 进入项目目录
-
-# 安装 Python 依赖
-uv sync
-```
-如果使用conda, 则先创建一个虚拟环境，然后再在这个环境中安装依赖。
-```bash
-conda create -n inkscape-pymath python=3.13
-conda activate inkscape-pymath
-cd inkscape-pymath # 进入项目目录
-pip install -e . # 安装依赖
-```
-不使用git clone也可以直接下载文件压缩包到本地，然后解压到项目目录即可。
-
-手动将以下两个文件或文件夹复制到inkscape的extension文件夹中即可完成安装。
-
-- inx/math\_formula.inx
-- src/math\_formula\_core/ (整个目录)
-
-一般情况下extension路径为：
+### 2. Inkscape extensions文件夹目录位置
 
 | 平台                  | 路径                                                             |
 | ------------------- | -------------------------------------------------------------- |
-| Linux (原生)          | `~/.config/inkscape/extensions`                                |
-| Linux (Flatpak 推荐！) | `~/.var/app/org.inkscape.Inkscape/config/inkscape/extensions/` |
-| macOS               | `~/Library/Application Support/inkscape/extensions`            |
-| Windows             | `%APPDATA%\inkscape\extensions`                                |
+| **Linux (原生)**      | `~/.config/inkscape/extensions/`                               |
+| **Linux (Flatpak)** | `~/.var/app/org.inkscape.Inkscape/config/inkscape/extensions/` |
+| **macOS**           | `~/Library/Application Support/inkscape/extensions/`           |
+| **Windows**         | `C:\Users\<用户名>\AppData\Roaming\inkscape\extensions\`          |
 
-若想卸载只需要移除刚才的文件以及文件夹即可。
+## Python 版本要求
 
-### 2. 配置 Python 环境
+- **Python 3.8+**
 
-**这是最关键的步骤！** Inkscape 使用自带的 Python 环境，而扩展所需的库 (`ziamath` 等) 安装在 uv 虚拟环境中。需要让 Inkscape 能访问这些库。
-请参考scripts/inkscape-pythonSelect.sh 以及对应的说明文件inkscape-pythonSelect-README.md。支持conda虚拟环境。
+### Linux
 
-### 3. 验证安装
+大多数 Linux 发行版通常自带 Python，Inkscape 默认使用系统 Python。如需指定自定义 Python 版本，可以修改 `preferences.xml` 文件。
+
+### Windows
+
+Windows 系统通常不自带 Python，需要手动安装。Inkscape 可能无法自动检测 Windows 系统的 Python。需要修改 `preferences.xml` 文件。先安装完后看一下能否正常使用插件，如果不行再考虑修改 `preferences.xml` 文件
+
+参考 \[Inkscape Python 解释器配置方法，请参考：[inkscape-pythonSelect 项目的 README](https://github.com/inkscape-pymath/scripts/inkscape-pythonSelect-README.md)
+
+## 使用
 
 1. 打开 Inkscape
-2. 菜单栏点击: **扩展 > 文本 > 数学公式**
-3. 在公式输入框中输入 `\frac{1}{2}` 或 `J_{xx}`
-4. 点击 **应用**
+2. 菜单：扩展 → 文本（Text） → LaTeX Math(数学公式)
+3. 输入 LaTeX 公式
+4. 选择字体(可选)
+5. 点击确定
 
-如果公式正确渲染，说明安装成功！
+## 测试公式
 
-## 卸载
+### 矩阵运算
 
-移除安装时复制的文件以及文件夹即可完成卸载。
-卸载后请重启 Inkscape。
-
-## 使用说明
-
-1. 打开 Inkscape。
-2. 菜单栏点击: **扩展 > 文本 > 数学公式**。
-3. 在弹出的对话框中输入公式。
-4. 点击 **应用** 即可将公式插入画布。
-
-**可用选项：**
-
-- **字号**: 公式文字大小 (8-72 pt)
-- **颜色**: 公式颜色 (HEX 值)
-- **字体**: 选择数学字体 (需支持 OpenType MATH 表)
-- **插入位置**:
-  - 当前选中物体的中心
-  - 当前画布视图的中心
-  - 文档页面的几何中心
-  - 坐标原点 (0,0)
-- **取消组合**: 是否在插入后自动拆分公式元素
-
-## 常见问题
-
-### Q: 扩展菜单没有出现？
-
-1. 确认扩展文件已正确安装到 Inkscape 扩展目录
-2. 确认 Python 环境变量已正确设置
-3. 重启 Inkscape
-
-### Q: 公式显示为空白或报错 "No module named 'ziamath'"？
-
-这是最常见的问题。`PYTHONPATH` 未正确设置。请参考上文的"配置 Python 环境"部分。
-
-### Q: 公式位置不正确？
-
-尝试选择不同的"插入位置"选项。
-
-### Q: 如何编辑已插入的公式？
-
-目前不支持直接编辑。需删除原公式，重新渲染。
-
-### Q: 支持哪些 LaTeX 命令？
-
-支持 ziamath 支持的大部分 LaTeX 数学命令，包括：
-
-- 分数: `\frac{a}{b}`
-- 上下标: `x^2`, `a_{i}`
-- 根号: `\sqrt{x}`, `\sqrt[n]{x}`
-- 积分: `\int_0^1 f(x)dx`
-- 求和: `\sum_{i=0}^n`
-- 矩阵: `\begin{matrix}...\end{matrix}`
-- 等等
-
-## 单元测试
-
-项目包含针对公式渲染逻辑的单元测试。
-
-```bash
-uv run pytest
+```latex
+\begin{aligned}
+ & 
+\begin{bmatrix}
+a_{11} & a_{12} & \ldots & a_{1n} \\
+a_{21} & a_{22} & \ldots & a_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+a_{m1} & a_{m2} & \ldots & a_{mn}
+\end{bmatrix}-
+\begin{bmatrix}
+b_{11} & b_{12} & \ldots & b_{1n} \\
+b_{21} & b_{22} & \ldots & b_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+b_{m1} & b_{m2} & \ldots & b_{mn}
+\end{bmatrix} \\
+ & =
+\begin{bmatrix}
+a_{11}-b_{11} & a_{12}-b_{12} & \ldots & a_{1n}-b_{1n} \\
+a_{21}-b_{21} & a_{22}-b_{22} & \ldots & a_{2n}-b_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+a_{m1}-b_{m1} & a_{m2}-b_{m2} & \ldots & a_{mn}-b_{mn}
+\end{bmatrix} \\
+ & 
+\begin{bmatrix}
+1 & 3 & 5 & 7 \\
+2 & 4 & 6 & 8
+\end{bmatrix}-
+\begin{bmatrix}
+4 & 3 & 1 & 4 \\
+5 & 3 & 1 & 6
+\end{bmatrix}=
+\begin{bmatrix}
+-3 & 0 & 4 & 3 \\
+-3 & 1 & 5 & 2
+\end{bmatrix}
+\end{aligned}
 ```
 
-## 项目结构
+### 二项式展开
 
-```
-extension-inkscape/
-├── inx/                    # Inkscape 扩展 UI 定义
-│   └── math_formula.inx
-├── src/                    # 源代码
-│   └── math_formula_core/
-│       ├── __init__.py
-│       ├── math_formula.py # 主扩展文件
-│       ├── renderer.py     # 公式渲染逻辑
-│       └── utils.py       # 工具函数
-├── scripts/                # python环境工具
-│   ├── inkscape-pythonSelect.sh
-│   └── inkscape-pythonSelect-README.md
-├── tests/                  # 单元测试
-│   └── test_renderer.py
-├── pyproject.toml         # 项目配置
-└── README.md
+```latex
+\begin{align}
+(a+b)^2 &= (a+b)(a+b) \\
+&= a^2 + ab + ba + b^2 \\
+&= a^2 + 2ab + b^2
+\end{align}
 ```
 
-## 技术说明
+### 希腊字母
 
-**此插件的核心功能（公式渲染）完全不依赖** **`inkex`**，仅依赖 `ziamath`。`inkex` 仅在插件与 Inkscape 进行交互（读取文档、插入元素）时需要。
+```latex
+\alpha, \beta, \gamma, \delta, \epsilon, \theta, \lambda, \mu, \pi, \sigma, \phi, \omega
+```
 
-Inkscape 1.x 已经内置了 `inkex` 库。当插件被 Inkscape 调用时，Python 解释器已经加载了 `inkex`，因此插件可以正常工作，无需在虚拟环境中安装 `inkex`。
+### 微分方程
 
-## 贡献
+```latex
+\frac{d\vec{M}}{dt}=-|\gamma|\vec{M}\times\vec{H}_{eff}+\frac{\alpha}{M_s}(\vec{M}\times\frac{d\vec{M}}{dt})
+```
 
-欢迎提交 Issue 和 Pull Request！
+### 积分方程
+
+```latex
+\begin{aligned}
+\mathcal{E} & =\int_{V_\mathrm{m}}\mathrm{d}\mathbf{r}\quad\mathcal{A}\sum_{i=x,y,z}\left|\nabla m_i\right|^2+\mathcal{D}\mathbf{m}\cdot(\nabla\times\mathbf{m})-M_\mathrm{s}\mathbf{m}\cdot\mathbf{B}+ \\
+ & +\frac{1}{2\mu_0}\int_{\mathbb{R}^3}\mathrm{d}\mathbf{r}\sum_{i=x,y,z}\left|\nabla A_{\mathrm{d},i}\right|^2,
+\end{aligned}
+```
+
+### 坐标变换
+
+```latex
+\begin{pmatrix} x' \\ y' \end{pmatrix} = \frac{1}{l} \begin{pmatrix} \cos \phi_{\mathrm{A}} & \sin \phi_{\mathrm{A}} \\ -\sin \phi_{\mathrm{A}} & \cos \phi_{\mathrm{A}} \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}
+```
+
+### 绝对值函数
+
+```latex
+|x| = \begin{cases} x & \text{if } x \ge 0 \\ -x & \text{if } x < 0 \end{cases}
+```
+
+### 化学方程式
+
+```latex
+\ce{K4[Fe(CN)6] + 6H2O -> 4K+ + [Fe(CN)6]^4-}
+\ce{2H2(g) + O2(g) -> 2H2O(l)}
+\ce{H2O <=> H+ + OH-}
+\ce{Al2(SO4)3 + 6NaOH -> 2Al(OH)3 v + 3Na2SO4}
+\ce{CaCO3(s) ->[\Delta] CaO(s) + CO2(g)}
+```
+
+## 内置字体
+
+插件内置以下数学字体：
+
+| 字体                    | 特点                                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------- |
+| **STIX Two Math**（默认） | STIX（Scientific and Technical Information Exchange）字体的第二代，专为科学和技术排版设计，提供了广泛的数学符号覆盖，外观现代、清晰，适合各种数学和科学文档。 |
+| **Latin Modern Math** | 基于 Computer Modern 的现代开源字体，是 TeX/LaTeX 标准字体的继承者，风格经典、优雅，适合传统数学文档和排版。                                    |
+| **XITS Math**         | STIX 字体的开源分支，提供了完整的数学符号集，同时支持阿拉伯文和波斯文等 RTL（从右到左）语言的数学排版。                                                |
+| **Libertinus Math**   | 基于 Linux Libertine 字体的开源数学字体，风格优雅、易读，适合书籍、论文等正式文档。                                                      |
+
+## 自定义字体限制
+
+自定义字体必须包含 **MATH table**（OpenType 数学表）。
+
+### 为什么常见字体如 Times New Roman、Arial 不能使用？
+
+普通文字字体（如 Times New Roman、Arial、Helvetica 等）虽然包含基本的数学符号（如 `+`、`-`、`=`），但它们**不包含 OpenType MATH table**。
+
+数学公式排版需要：
+
+- 专门设计的数学符号（各种大小的括号、积分、求和等）
+- 精确的数学间距和对齐规则
+- 上标/下标位置调整
+- 分数、根式等复杂结构的支持
+
+这些功能都需要 MATH table 来实现。因此，即使是常见的优秀文字字体，也无法直接用于数学公式渲染。
+
+如果您想使用类似 Times New Roman 的字体风格，建议使用 STIX Two Math 或 XITS Math，它们的风格与 Times New Roman 相似，但专门为数学排版设计。
+
+## 贡献和 Issue
+
+欢迎贡献代码、报告问题或提出改进建议！
+
+- 如果您发现了 bug，请提交 Issue
+- 如果您有功能建议，欢迎提出
+- 如果您想贡献代码，欢迎提交 Pull Request
+
+我们非常感谢任何形式的贡献！
 
 ***
 
-<a id="english-version"></a>
+# Inkscape Pymath
 
-# Inkscape Math Formula Extension
+[中文版本](#inkscape-pymath)
+![Introduction](image-1.png)
 
-> **[中文版本](#中文版本)** | **[Chinese Version](#中文版本)**
 
-***
 
-## English Version
+## Introduction
 
-This is an extension plugin for the vector graphics software Inkscape, allowing users to insert mathematically rendered formulas into the canvas using **ziamath**.
+Inkscape-pymath is a pure Python Inkscape math formula extension, no additional dependencies needed, renders LaTeX math formulas and chemical equations directly in Inkscape.
 
 ## Features
 
-- **Pure Python Implementation**: No LaTeX environment required (e.g., TeX Live, MiKTeX), uses Python for rendering.
-- **LaTeX & MathML Support**: Use LaTeX syntax (e.g., `\frac{1}{2}`) or standard MathML.
-- **SVG Vector Output**: Formulas are rendered as SVG paths, maintaining high clarity and scalability.
-- **Customizable Styles**: Supports font size, color, and font selection (built-in STIX Two Math, supports other math fonts).
+- Pure Python implementation, no extra LaTeX engine required
+- Supports math formulas and chemical equations (`\ce{}` command
+- Multiple built-in math fonts
+- Custom font support (must include MATH table)
+- Formula color customization
+- Inline and display modes
 
-## Font Selection
+## Installation
 
-Due to the characteristics of the `ziamath` library, the fonts used must contain a special **OpenType MATH table** to properly typeset mathematical formulas. Most regular system fonts do not have this feature.
+### 1. Copy Files
 
-The font selection list only includes fonts known to support the MATH table:
+Copy the following to your Inkscape extensions directory:
 
-- **STIX Two Math**: Built into `ziamath`, no additional installation needed, recommended.
-- **Cambria Math, Latin Modern Math, DejaVu Math TeX Gyre**: These are common math fonts. If your system has them installed, you can choose to use them.
+- `inkscape_math_core/` folder
+- `latex_math.inx` file
+  ![Flatpak 版本的extensions文件夹](image.png)
 
-**Important Note**: Inkscape extension UI (INX files) cannot dynamically fetch system font lists. Therefore, we cannot provide a complete system font dropdown like Inkscape itself. Please select a suitable font based on the above description.
+### 2. Inkscape Extensions File Folder Directory Locations
 
-## Requirements
+| Platform            | Path                                                           |
+| ------------------- | -------------------------------------------------------------- |
+| **Linux (native)**  | `~/.config/inkscape/extensions/`                               |
+| **Linux (Flatpak)** | `~/.var/app/org.inkscape.Inkscape/config/inkscape/extensions/` |
+| **macOS**           | `~/Library/Application Support/inkscape/extensions/`           |
+| **Windows**         | `C:\Users\<Username>\AppData\Roaming\inkscape\extensions\`     |
 
-- Inkscape 1.0+ (includes inkex library, no additional installation needed)
-- Python 3.13+ (uv virtual environment will be configured automatically)
-- `uv` package manager (recommended) or `conda` (optional)
+## Python Version Requirement
 
-## Quick Start
+- **Python 3.8+**
 
-### 1. Install Dependencies and Deploy Extension
+### Linux
 
-```bash
-# Clone the project
-git clone https://github.com/Donghi007/inkscape-pymath.git
-cd extension-inkscape
+Most Linux distributions come with Python pre-installed. Inkscape uses system Python by default. To specify a custom Python version, you can modify the `preferences.xml` file.
 
-# Install Python dependencies
-uv sync
-```
+### Windows
 
-If using conda, create a virtual environment first, and then install the dependencies in that environment.
-```bash
-conda create -n inkscape-pymath python=3.13
-conda activate inkscape-pymath
-cd extension-inkscape # enter the project directory
-pip install -e . # install dependencies
-```
-If you prefer not to use git clone, you can download the project files as a zip archive and extract them to the project directory.
+Windows typically doesn't come with Python pre-installed; manual installation is required. Inkscape may not automatically detect system Python on Windows. You need to modify the `preferences.xml` file. It's better to install this extension first, then check if it works. If not, you can try to modify the `preferences.xml` file.
 
-Manually copy the following two files or folders to the Inkscape extension folder to complete installation.
-
-- inx/math\_formula.inx
-- src/math\_formula\_core/ (entire directory)
-
-Extension paths for different platforms:
-
-| Platform                     | Path                                                           |
-| ---------------------------- | -------------------------------------------------------------- |
-| Linux (native)               | `~/.config/inkscape/extensions`                                |
-| Linux (Flatpak recommended!) | `~/.var/app/org.inkscape.Inkscape/config/inkscape/extensions/` |
-| macOS                        | `~/Library/Application Support/inkscape/extensions`            |
-| Windows                      | `%APPDATA%\inkscape\extensions`                                |
-
-To uninstall, simply remove the files and folders you copied earlier.
-
-### 2. Configure Python Environment
-
-**This is the most crucial step!** Inkscape uses its own Python environment, while the required libraries (`ziamath`, etc.) are installed in the uv virtual environment. You need to make Inkscape access these libraries.
-Please refer to scripts/inkscape-pythonSelect.sh and its documentation inkscape-pythonSelect-README.md. Conda virtual environments are also supported.
-
-### 3. Verify Installation
-
-1. Open Inkscape
-2. Menu bar: **Extensions > Text > Math Formula**
-3. Enter `\frac{1}{2}` or `J_{xx}` in the formula input
-4. Click **Apply**
-
-If the formula renders correctly, the installation is successful!
-
-## Uninstallation
-
-Remove the files and folders you copied during installation.
-Please restart Inkscape after uninstallation.
+For Inkscape Python interpreter configuration, please refer to: [inkscape-pythonSelect project README](https://github.com/inkscape-pymath/scripts/inkscape-pythonSelect-README.md)
 
 ## Usage
 
-1. Open Inkscape.
-2. Menu bar: **Extensions > Text > Math Formula**.
-3. Enter a formula in the dialog.
-4. Click **Apply** to insert the formula into the canvas.
+1. Open Inkscape
+2. Menu: Extensions → Text → LaTeX Math(数学公式)
+3. Enter LaTeX formula
+4. Select font (optional)
+5. Click Apply
 
-**Available Options:**
+## Test Formulas
 
-- **Font Size**: Formula text size (8-72 pt)
-- **Color**: Formula color (HEX value)
-- **Font**: Choose a math font (must support OpenType MATH table)
-- **Insert Position**:
-  - Center of currently selected object
-  - Center of current canvas view
-  - Geometric center of document page
-  - Origin (0,0)
-- **Ungroup**: Whether to automatically split formula elements after insertion
+### Matrix Operations
 
-## FAQ
-
-### Q: The extension menu doesn't appear?
-
-1. Confirm extension files are correctly installed in the Inkscape extension directory
-2. Confirm Python environment variable is correctly set
-3. Restart Inkscape
-
-### Q: Formula appears blank or shows error "No module named 'ziamath'"?
-
-This is the most common issue. `PYTHONPATH` is not correctly set. Please refer to the "Configure Python Environment" section above.
-
-### Q: Formula position is incorrect?
-
-Try selecting different "Insert Position" options.
-
-### Q: How to edit an inserted formula?
-
-Direct editing is not currently supported. Delete the original formula and re-render.
-
-### Q: Which LaTeX commands are supported?
-
-Most LaTeX math commands supported by ziamath, including:
-
-- Fractions: `\frac{a}{b}`
-- Superscripts/Subscripts: `x^2`, `a_{i}`
-- Square roots: `\sqrt{x}`, `\sqrt[n]{x}`
-- Integrals: `\int_0^1 f(x)dx`
-- Summations: `\sum_{i=0}^n`
-- Matrices: `\begin{matrix}...\end{matrix}`
-- And more
-
-## Unit Tests
-
-The project includes unit tests for formula rendering logic.
-
-```bash
-uv run pytest
+```latex
+\begin{aligned}
+ & 
+\begin{bmatrix}
+a_{11} & a_{12} & \ldots & a_{1n} \\
+a_{21} & a_{22} & \ldots & a_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+a_{m1} & a_{m2} & \ldots & a_{mn}
+\end{bmatrix}-
+\begin{bmatrix}
+b_{11} & b_{12} & \ldots & b_{1n} \\
+b_{21} & b_{22} & \ldots & b_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+b_{m1} & b_{m2} & \ldots & b_{mn}
+\end{bmatrix} \\
+ & =
+\begin{bmatrix}
+a_{11}-b_{11} & a_{12}-b_{12} & \ldots & a_{1n}-b_{1n} \\
+a_{21}-b_{21} & a_{22}-b_{22} & \ldots & a_{2n}-b_{2n} \\
+\ldots & \ldots & \ldots & \ldots \\
+a_{m1}-b_{m1} & a_{m2}-b_{m2} & \ldots & a_{mn}-b_{mn}
+\end{bmatrix} \\
+ & 
+\begin{bmatrix}
+1 & 3 & 5 & 7 \\
+2 & 4 & 6 & 8
+\end{bmatrix}-
+\begin{bmatrix}
+4 & 3 & 1 & 4 \\
+5 & 3 & 1 & 6
+\end{bmatrix}=
+\begin{bmatrix}
+-3 & 0 & 4 & 3 \\
+-3 & 1 & 5 & 2
+\end{bmatrix}
+\end{aligned}
 ```
 
-## Project Structure
+### Binomial Expansion
 
-```
-extension-inkscape/
-├── inx/                    # Inkscape extension UI definition
-│   └── math_formula.inx
-├── src/                    # Source code
-│   └── math_formula_core/
-│       ├── __init__.py
-│       ├── math_formula.py # Main extension file
-│       ├── renderer.py     # Formula rendering logic
-│       └── utils.py       # Utility functions
-├── scripts/                # Python environment tools
-│   ├── inkscape-pythonSelect.sh
-│   └── inkscape-pythonSelect-README.md
-├── tests/                  # Unit tests
-│   └── test_renderer.py
-├── pyproject.toml         # Project configuration
-└── README.md
+```latex
+\begin{align}
+(a+b)^2 &= (a+b)(a+b) \\
+&= a^2 + ab + ba + b^2 \\
+&= a^2 + 2ab + b^2
+\end{align}
 ```
 
-## Technical Notes
+### Greek Letters
 
-**The core functionality of this plugin (formula rendering) does not depend on** **`inkex`** **at all**, only on `ziamath`. `inkex` is only needed when the plugin interacts with Inkscape (reading documents, inserting elements).
+```latex
+\alpha, \beta, \gamma, \delta, \epsilon, \theta, \lambda, \mu, \pi, \sigma, \phi, \omega
+```
 
-Inkscape 1.x already has the `inkex` library built-in. When the plugin is invoked by Inkscape, the Python interpreter has already loaded `inkex`, so the plugin can work normally without installing `inkex` in the virtual environment.
+### Differential Equation
 
-## Contributing
+```latex
+\frac{d\vec{M}}{dt}=-|\gamma|\vec{M}\times\vec{H}_{eff}+\frac{\alpha}{M_s}(\vec{M}\times\frac{d\vec{M}}{dt})
+```
 
-Issues and Pull Requests are welcome!
+### Integral Equation
+
+```latex
+\begin{aligned}
+\mathcal{E} & =\int_{V_\mathrm{m}}\mathrm{d}\mathbf{r}\quad\mathcal{A}\sum_{i=x,y,z}\left|\nabla m_i\right|^2+\mathcal{D}\mathbf{m}\cdot(\nabla\times\mathbf{m})-M_\mathrm{s}\mathbf{m}\cdot\mathbf{B}+ \\
+ & +\frac{1}{2\mu_0}\int_{\mathbb{R}^3}\mathrm{d}\mathbf{r}\sum_{i=x,y,z}\left|\nabla A_{\mathrm{d},i}\right|^2,
+\end{aligned}
+```
+
+### Coordinate Transformation
+
+```latex
+\begin{pmatrix} x' \\ y' \end{pmatrix} = \frac{1}{l} \begin{pmatrix} \cos \phi_{\mathrm{A}} & \sin \phi_{\mathrm{A}} \\ -\sin \phi_{\mathrm{A}} & \cos \phi_{\mathrm{A}} \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}
+```
+
+### Absolute Value Function
+
+```latex
+|x| = \begin{cases} x & \text{if } x \ge 0 \\ -x & \text{if } x < 0 \end{cases}
+```
+
+### Chemical Equations
+
+```latex
+\ce{K4[Fe(CN)6] + 6H2O -> 4K+ + [Fe(CN)6]^4-}
+\ce{2H2(g) + O2(g) -> 2H2O(l)}
+\ce{H2O <=> H+ + OH-}
+\ce{Al2(SO4)3 + 6NaOH -> 2Al(OH)3 v + 3Na2SO4}
+\ce{CaCO3(s) ->[\Delta] CaO(s) + CO2(g)}
+```
+
+## Built-in Fonts
+
+The following math fonts are built-in:
+
+| Font                        | Features                                                                                                                                                                                                                                                                                     |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **STIX Two Math** (default) | Second generation of STIX (Scientific and Technical Information Exchange) fonts, designed specifically for scientific and technical typesetting. Provides extensive mathematical symbol coverage with a modern, clean appearance suitable for various mathematical and scientific documents. |
+| **Latin Modern Math**       | A modern open-source font based on Computer Modern, the successor to the TeX/LaTeX standard font. Features a classic, elegant style ideal for traditional mathematical documents and typesetting.                                                                                            |
+| **XITS Math**               | An open-source fork of the STIX fonts, providing a complete set of mathematical symbols while also supporting mathematical typesetting for RTL (right-to-left) languages like Arabic and Persian.                                                                                            |
+| **Libertinus Math**         | An open-source math font based on the Linux Libertine font family, featuring an elegant, readable style suitable for formal documents like books and papers.                                                                                                                                 |
+
+## Custom Font Limitations
+
+Custom fonts must include the **MATH table** (OpenType math table).
+
+### Why can't common fonts like Times New Roman or Arial be used?
+
+Regular text fonts (like Times New Roman, Arial, Helvetica, etc.) include basic math symbols (such as `+`, `-`, `=`), but they **do not include the OpenType MATH table**.
+
+Mathematical formula typesetting requires:
+
+- Specially designed mathematical symbols (various-sized brackets, integrals, summations, etc.)
+- Precise mathematical spacing and alignment rules
+- Subscript/superscript position adjustment
+- Support for complex structures like fractions, radicals, etc.
+
+These features all require the MATH table to implement. Therefore, even common excellent text fonts cannot be directly used for mathematical formula rendering.
+
+If you want a font style similar to Times New Roman, we recommend using STIX Two Math or XITS Math, which have a similar style to Times New Roman but are specifically designed for mathematical typesetting.
+
+## Contributing and Issues
+
+Contributions, bug reports, and improvement suggestions are welcome!
+
+- If you find a bug, please submit an Issue
+- If you have feature suggestions, feel free to propose them
+- If you want to contribute code, Pull Requests are welcome
+
+We greatly appreciate contributions in any form!
